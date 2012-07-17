@@ -4,6 +4,15 @@
 (autoload 'mo-git-blame-file "mo-git-blame" nil t)
 (autoload 'mo-git-blame-current "mo-git-blame" nil t)
 
+
+; JavaScript
+(autoload 'js-mode "js" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+; JSON
+(add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
+; Idoljs
+(add-to-list 'auto-mode-alist '("\\.idoljs$" . js-mode))
+
 ; TextMate
 (require 'textmate)
 (textmate-mode t)
@@ -13,6 +22,7 @@
 (autoload 'ack "full-ack" nil t)
 (autoload 'ack-find-same-file "full-ack" nil t)
 (autoload 'ack-find-file "full-ack" nil t)
+(setq ack-executable (executable-find "ack-grep"))
 
 ; Scala
 (require 'scala-mode)
