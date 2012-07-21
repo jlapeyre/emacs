@@ -13,5 +13,6 @@
 (load-file "~/.emacs.d/load-directory.el")
 
 (add-to-list 'load-path "~/.emacs.d/vendor/scala")
+(add-to-list 'load-path "~/.emacs.d/vendor/idoljs")
 
 (mapcar 'load-directory '("~/.emacs.d/customizations"))

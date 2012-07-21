@@ -10,8 +10,11 @@
 (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
 ; JSON
 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
+
+
 ; Idoljs
-(add-to-list 'auto-mode-alist '("\\.idoljs$" . js-mode))
+(autoload 'idoljs-mode "idoljs-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.idoljs$" . idoljs-mode))
 
 ; TextMate
 (require 'textmate)
@@ -42,6 +45,7 @@
 ; Enable fill column indicator
 (require 'fill-column-indicator)
 (add-hook 'scala-mode-hook 'fci-mode)
+(add-hook 'idoljs-mode-hook 'fci-mode)
 
 ; smart-tab
 (require 'smart-tab)
