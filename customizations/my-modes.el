@@ -4,17 +4,26 @@
 (autoload 'mo-git-blame-file "mo-git-blame" nil t)
 (autoload 'mo-git-blame-current "mo-git-blame" nil t)
 
-
 ; JavaScript
 (autoload 'js-mode "js" nil t)
+(setq js-indent-level 2)
 (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
 ; JSON
 (add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 
-
 ; Idoljs
 (autoload 'idoljs-mode "idoljs-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.idoljs$" . idoljs-mode))
+
+; Less
+(require 'less-css-mode)
+;(autoload 'less-css-mode "LESS" nil t)
+;(add-to-list 'auto-mode-alist '("\\.less$" . less-css-mode))
+
+; soy
+(require 'closure-template-html-mode)
+;(autoload 'closure-template-html-mode "closure-template-html" nil t)
+(add-to-list 'auto-mode-alist '("\\.soy$" . closure-template-html-mode))
 
 ; TextMate
 (require 'textmate)
