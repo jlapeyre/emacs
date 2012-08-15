@@ -25,6 +25,11 @@
 ;(autoload 'closure-template-html-mode "closure-template-html" nil t)
 (add-to-list 'auto-mode-alist '("\\.soy$" . closure-template-html-mode))
 
+(require 'clojurescript-mode)
+(add-hook 'clojurescript-mode-hook
+          (lambda ()
+            (setq inferior-lisp-program "lein trampoline cljsbuild repl-rhino")))
+
 ; TextMate
 (require 'textmate)
 (textmate-mode t)
@@ -55,6 +60,16 @@
 (require 'fill-column-indicator)
 (add-hook 'scala-mode-hook 'fci-mode)
 (add-hook 'idoljs-mode-hook 'fci-mode)
+(add-hook 'clojure-mode-hook 'fci-mode)
+
+; paredit
+(autoload 'paredit-mode "paredit"
+  "Minor mode for pseudo-structurally editing Lisp code."
+  t)
+  (mapc (lambda (mode)
+    (let ((hook (intern (concat (symbol-name mode) "-mode-hook"))))
+     (add-hook hook (lambda () (paredit-mode 1)))))
+    '(emacs-lisp lisp inferior-lisp slime slime-repl clojure))
 
 ; smart-tab
 (require 'smart-tab)
