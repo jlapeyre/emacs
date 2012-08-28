@@ -19,6 +19,9 @@
 ; undo
 (global-set-key (kbd "M-z") 'undo)
 
+; keybinding for yasnippet
+(global-set-key (kbd "C-<tab>") 'yas/expand)
+
 ; Key bindings
 ; optimized for the neo layout
 

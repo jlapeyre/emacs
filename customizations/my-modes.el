@@ -57,10 +57,15 @@
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
 
 ; Enable fill column indicator
-(require 'fill-column-indicator)
-(add-hook 'scala-mode-hook 'fci-mode)
-(add-hook 'idoljs-mode-hook 'fci-mode)
-(add-hook 'clojure-mode-hook 'fci-mode)
+; (require 'fill-column-indicator)
+; (add-hook 'scala-mode-hook 'fci-mode)
+; (add-hook 'idoljs-mode-hook 'fci-mode)
+; (add-hook 'clojure-mode-hook 'fci-mode)
+
+(add-hook 'clojure-mode-hook
+          '(lambda () (highlight-lines-matching-regexp
+                       "................................................................................."
+                       "hi-green-b")))
 
 ; paredit
 (autoload 'paredit-mode "paredit"
@@ -71,10 +76,24 @@
      (add-hook hook (lambda () (paredit-mode 1)))))
     '(emacs-lisp lisp inferior-lisp slime slime-repl clojure))
 
+; yasnippets
+(require 'yasnippet)
+(yas/global-mode 1)
+(yas/load-directory "~/.emacs.d/snippets")
+
 ; smart-tab
 (require 'smart-tab)
 (global-smart-tab-mode 1)
 (setq smart-tab-using-hippie-expand nil)
 (setq smart-tab-completion-functions-alist
   '((emacs-lisp-mode . lisp-complete-symbol)
-    (text-mode . dabbrev-completion)))
+    (text-mode . dabbrev-completion)
+    (clojure-mode . slime-complete-symbol)))
+
+(defun yas-or-smart-tab ()
+  (interactive)
+  (let ((yas/fallback-behavior 'return-nil))
+    (unless (yas/expand)
+      (smart-tab))))
+
+(define-key smart-tab-mode-map [remap smart-tab] 'yas-or-smart-tab)
