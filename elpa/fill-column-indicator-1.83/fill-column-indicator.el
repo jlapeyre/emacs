@@ -3,7 +3,7 @@
 ;; Copyright (c) 2011-2012 Alp Aker
 
 ;; Author: Alp Aker <alp.tekin.aker@gmail.com>
-;; Version: 1.82
+;; Version: 1.83
 ;; Keywords: convenience
 
 ;; This program is free software; you can redistribute it and/or
@@ -38,16 +38,18 @@
 
 ;; To toggle graphical indication of the fill column in a buffer, use the
 ;; command `fci-mode'.
-
+ 
 ;; Configuration
 ;; =============
 
 ;; By default, fci-mode draws its vertical indicator at the fill column.  If
 ;; you'd like it to be drawn at another column, set `fci-rule-column' to the
-;; column number.  This variable becomes buffer local when set, so you can
-;; use different values for different modes.  The default behavior (drawing
-;; the rule at the fill column) is specified by setting fci-rule-column to
-;; nil.
+;; column number.  (A case in which this might be useful is when you want to
+;; fill comments at, for example, column 70, but want a vertical rule at
+;; column 80 or 100 to indicate the maximum line length for code.)  The
+;; default behavior (showing the indicator at the fill column) is specified
+;; by setting fci-rule-column to nil.  Note that this variable becomes buffer
+;; local when set.
 
 ;; On graphical displays the fill-column rule is drawn using a bitmap
 ;; image.  Its color is controlled by the variable `fci-rule-color', whose
@@ -261,7 +263,7 @@ function `fci-mode' is run."
   :type 'float)
 
 (defcustom fci-rule-character ?|
-  "Character use to draw the fill-column rule on character terminals.
+  "Character used to draw the fill-column rule on character terminals.
 
 Changes to this variable do not take effect until the mode
 function `fci-mode' is run."
@@ -384,13 +386,13 @@ U+E000-U+F8FF, inclusive)."
 
 ;; Hooks we use.
 (defconst fci-hook-assignments
-  '((after-change-functions fci-redraw-region 'local)
-    (before-change-functions fci-extend-rule-for-deletion 'local)
-    (window-scroll-functions fci-update-window-for-scroll 'local)
+  '((after-change-functions fci-redraw-region t)
+    (before-change-functions fci-extend-rule-for-deletion t)
+    (window-scroll-functions fci-update-window-for-scroll t)
     (window-configuration-change-hook  fci-redraw-frame)
-    (post-command-hook  fci-post-command-check 'local)
-    (change-major-mode-hook turn-off-fci-mode 'local)
-    (longlines-mode-hook  fci-update-all-windows 'local)))
+    (post-command-hook  fci-post-command-check t)
+    (change-major-mode-hook turn-off-fci-mode t)
+    (longlines-mode-hook  fci-update-all-windows t)))
 
 ;;; ---------------------------------------------------------------------
 ;;; Miscellany
@@ -699,7 +701,7 @@ rough heuristic.)"
   (memq t (mapcar #'fci-overlay-fills-background-p (overlays-at posn))))
 
 ;; The display spec used in overlay before strings to pad out the rule to the
-;; fill-column.
+;; fill-column. 
 (defconst fci-padding-display
   '((when (not (fci-competing-overlay-p buffer-position))
       . (space :align-to fci-column))
@@ -713,15 +715,16 @@ rough heuristic.)"
 (defun fci-rule-display (blank rule-img rule-str for-pre-string)
   "Generate a display specification for a fill-column rule overlay string."
   (let* ((cursor-prop (if (and (not for-pre-string) (not fci-newline)) 1))
+         (propertized-rule-str (propertize rule-str 'cursor cursor-prop))
          (display-prop (if rule-img
                            `((when (not (or (display-images-p)
                                             (fci-competing-overlay-p buffer-position)))
-                               . ,(propertize rule-str 'cursor cursor-prop))
+                               . ,propertized-rule-str)
                              (when (not (fci-competing-overlay-p buffer-position))
                                . ,rule-img)
                              (space :width 0))
                          `((when (not (fci-competing-overlay-p buffer-position))
-                             . ,(propertize rule-str 'cursor cursor-prop))
+                             . ,propertized-rule-str)
                            (space :width 0)))))
     (propertize blank 'cursor cursor-prop 'display display-prop)))
 

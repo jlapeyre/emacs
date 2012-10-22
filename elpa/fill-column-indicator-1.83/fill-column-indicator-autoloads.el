@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (turn-on-fci-mode fci-mode) "fill-column-indicator"
-;;;;;;  "fill-column-indicator.el" (20469 47217 611234 200000))
+;;;;;;  "fill-column-indicator.el" (20564 30962))
 ;;; Generated autoloads from fill-column-indicator.el
 
 (autoload 'fci-mode "fill-column-indicator" "\
@@ -30,8 +30,8 @@ Turn on fci-mode unconditionally.
 
 ;;;***
 
-;;;### (autoloads nil nil ("fill-column-indicator-pkg.el") (20469
-;;;;;;  47217 729830 393000))
+;;;### (autoloads nil nil ("fill-column-indicator-pkg.el") (20564
+;;;;;;  30962 216634))
 
 ;;;***
 
